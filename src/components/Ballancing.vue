@@ -6,9 +6,6 @@
         Выберите в левой колонке пункты и их количество что бы в правой колонке
         появился итоговый балланс
       </p>
-      <button class="btn btn-lg btn-block btn-outline-primary" @click="clickMe">
-        Подсчитать
-      </button>
     </div>
 
     <div class="row m-5 p-1">
@@ -19,9 +16,17 @@
           </div>
           <div class="card-body">
             <ul class="list-unstyled mt-3 mb-4">
-              <li v-for="(curArmor, index) in armor" :key="index">
+              <li
+                v-for="(curArmor, index) in armor"
+                :key="index"
+                class="list-unstyled"
+              >
                 <ul>
-                  <li v-for="(data, dataName) in curArmor" :key="dataName">
+                  <li
+                    v-for="(data, dataName) in curArmor"
+                    :key="dataName"
+                    class="list-unstyled"
+                  >
                     {{ dataName }}: {{ data }}
                   </li>
                 </ul>
@@ -29,21 +34,27 @@
                   <div class="col">
                     <button
                       type="button"
-                      @click="curArmor.IncreaseCount()"
+                      @click="
+                        curArmor.IncreaseCount();
+                        recalculateBallanse();
+                      "
                       class="btn btn-primary m-1 col-1"
                     >
                       +
                     </button>
                     <button
                       type="button"
-                      @click="curArmor.DecreaseCount()"
+                      @click="
+                        curArmor.DecreaseCount();
+                        recalculateBallanse();
+                      "
                       class="btn btn-primary m-1 col-1"
                     >
                       -
                     </button>
                   </div>
                 </div>
-                --------------
+                <hr />
               </li>
             </ul>
           </div>
@@ -56,8 +67,65 @@
           </div>
           <div class="card-body">
             <ul class="list-unstyled mt-3 mb-4">
-              <li v-for="(data, index) in displayedStatistics" :key="index">
+              <li
+                v-for="(data, index) in displayedStatistics"
+                :key="index"
+                class="list-unstyled"
+              >
                 {{ index }} : {{ data.toFixed(2) }}
+              </li>
+            </ul>
+            <!--  -->
+            <div class="progress">
+              <div
+                class="progress-bar bg-danger"
+                role="progressbar"
+                :style="'width:' + displayedStatistics.healthBoost + '%'"
+                :aria-valuenow="displayedStatistics.healthBoost"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+              <div
+                class="progress-bar bg-success"
+                role="progressbar"
+                :style="'width:' + displayedStatistics.damageBoost + '%'"
+                :aria-valuenow="displayedStatistics.damageBoost"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+              <div
+                class="progress-bar bg-info"
+                role="progressbar"
+                :style="'width:' + displayedStatistics.speedBoost + '%'"
+                :aria-valuenow="displayedStatistics.speedBoost"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+            <!--  -->
+          </div>
+        </div>
+        <!--  -->
+        <div class="card mb-4 box-shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Информация</h4>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4">
+              <li
+                v-for="(curArmor, index) in armor"
+                :key="index"
+                class="list-unstyled"
+              >
+                <ul>
+                  <li class="list-unstyled">
+                    Наименование : {{ curArmor.name }}
+                  </li>
+                  <li class="list-unstyled">
+                    Количество : {{ curArmor.amountSelected }}
+                  </li>
+                </ul>
+                <hr />
               </li>
             </ul>
           </div>
@@ -165,13 +233,8 @@ export default class HelloWorld extends Vue {
     };
   }
 
-  clickMe(): void {
+  recalculateBallanse(): void {
     this.displayedStatistics = this.statistics.calc(this.armor);
-    console.log(this.addNum(4, 2));
-  }
-
-  addNum(num1: number, num2: number): number {
-    return num1 + num2;
   }
 }
 </script>
