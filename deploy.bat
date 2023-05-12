@@ -7,7 +7,7 @@
 
 @REM 2) remove dist from .gitignore
 
-@REM 3)
+@REM 3) run in sequence: (idk why when running in bat one command doesnt see result of others)
 npm run build
 git add dist
 git commit -m 'adding dist subtree'

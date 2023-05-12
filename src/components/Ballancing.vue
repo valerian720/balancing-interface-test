@@ -132,11 +132,33 @@
         </div>
       </div>
     </div>
+    <div class="row m-1 p-1">
+      <p>
+        <a
+          class="btn btn-primary"
+          data-bs-toggle="collapse"
+          href="#changeModules"
+          aria-expanded="false"
+          aria-controls="changeModules"
+        >
+          Изменить Модули
+        </a>
+      </p>
+      <div class="collapse" id="changeModules">
+        <div class="row" v-for="(curArmor, index) in armor" :key="index">
+          <ObjectCreatorVue
+            :constructable="curArmor"
+            :name="`модуля ${curArmor.name}`"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import ObjectCreatorVue from "@/components/ObjectCreator.vue";
 
 // i need a class to store stats
 class Armor {
@@ -203,6 +225,9 @@ class Stats {
 @Options({
   props: {
     msg: String,
+  },
+  components: {
+    ObjectCreatorVue,
   },
 })
 //
