@@ -148,6 +148,7 @@
         <div class="row" v-for="(curArmor, index) in armor" :key="index">
           <ObjectCreatorVue
             :constructable="curArmor"
+            @obj-changed="recalculateBallanse()"
             :name="`модуля ${curArmor.name}`"
           />
         </div>
