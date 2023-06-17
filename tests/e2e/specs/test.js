@@ -11,8 +11,8 @@ describe("ballancing interface", () => {
   it("it has redactor", () => {
     cy.visit("/");
     cy.contains("a.btn", "Изменить Модули").click();
-    cy.contains("button", "экспорт");
-    cy.contains("div", "импорт");
+    cy.contains("button", "экспорт").click();
+    cy.contains("div", "импорт").click();
   });
 
   it("it can change ballance", () => {
