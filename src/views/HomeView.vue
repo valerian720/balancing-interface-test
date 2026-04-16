@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Ballancing msg="Welcome to Your Vue.js + TypeScript App" />
+    <ballancing />
   </div>
 </template>
 

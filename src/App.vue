@@ -1,7 +1,8 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Балланс и CO</a>
+      <a class="navbar-brand" href="#">Баллансиор</a>
+      <small class="super-small"><VersionDisplay /></small>
       <button
         class="navbar-toggler"
         type="button"
@@ -25,7 +26,17 @@
   </nav>
   <router-view />
 </template>
+<script lang="ts">
+import { Options, Vue } from "vue-class-component";
+import VersionDisplay from "@/components/VersionDisplay.vue";
 
+@Options({
+  components: {
+    VersionDisplay,
+  },
+})
+export default class App extends Vue {}
+</script>
 <style lang="less">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -33,5 +44,9 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.super-small {
+  font-size: 0.5em;
 }
 </style>
