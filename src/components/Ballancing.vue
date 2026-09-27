@@ -145,12 +145,18 @@
         </a>
       </p>
       <div class="collapse" id="changeModules">
-        <div class="row" v-for="(curArmor, index) in armor" :key="index">
-          <ObjectCreatorVue
-            :constructable="curArmor"
-            @obj-changed="recalculateBallanse()"
-            :name="`модуля ${curArmor.name}`"
-          />
+        <div class="row">
+          <div
+            class="col-md-4 col-12 p-0 m-0"
+            v-for="(curArmor, index) in armor"
+            :key="index"
+          >
+            <ObjectCreatorVue
+              :constructable="curArmor"
+              @obj-changed="recalculateBallanse()"
+              :name="`модуля ${curArmor.name}`"
+            />
+          </div>
         </div>
       </div>
     </div>
