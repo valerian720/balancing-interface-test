@@ -7,3 +7,14 @@ module.exports = defineConfig({
     process.env.NODE_ENV === "production" ? "/balancing-interface-test/" : "/",
   transpileDependencies: true,
 });
+
+const title = "Balancing interface";
+
+module.exports = {
+  chainWebpack: (config) => {
+    config.plugin("html").tap((args) => {
+      args[0].title = title;
+      return args;
+    });
+  },
+};
