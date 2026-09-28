@@ -15,7 +15,7 @@
           )"
           :key="field"
         >
-          <div class="col-3">
+          <div class="col-5">
             <p class="col-form-label text-end">{{ field }}</p>
           </div>
           <div class="col-6">

@@ -1,160 +1,185 @@
 <template>
-  <div class="">
-    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+  <div class="container">
+    <!-- Заголовок -->
+    <header class="py-3 pt-md-5 pb-md-4 mx-auto text-center">
       <h1 class="display-4">Баллансировка</h1>
-      <p class="lead">
-        Выберите в левой колонке пункты и их количество что бы в правой колонке
-        появился итоговый балланс
+      <p class="lead mb-0">
+        Выберите в левой колонке пункты и их количество, чтобы в правой колонке
+        появился итоговый баланс
       </p>
-    </div>
+    </header>
 
-    <div class="row m-5 p-1">
-      <div class="col m-1 p-1">
-        <div class="card mb-4 box-shadow">
+    <div class="row g-4 m-3">
+      <!-- Левая колонка: элементы -->
+      <div class="col-12 col-lg-6">
+        <div class="card h-100 shadow-sm">
           <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Элементы</h4>
+            <h2 class="h4 mb-0">Элементы</h2>
           </div>
           <div class="card-body">
-            <ul class="list-unstyled mt-3 mb-4">
+            <ul class="list-unstyled mb-0">
               <li
                 v-for="(curArmor, index) in armor"
                 :key="index"
-                class="list-unstyled"
+                class="pb-3 mb-3 border-bottom"
               >
-                <ul>
-                  <li
+                <dl class="row mb-2">
+                  <template
                     v-for="(data, dataName) in curArmor"
                     :key="dataName"
-                    class="list-unstyled"
                   >
-                    {{ dataName }}: {{ data }}
-                  </li>
-                </ul>
-                <div class="row">
-                  <div class="col">
-                    <button
-                      type="button"
-                      @click="
-                        curArmor.IncreaseCount();
-                        recalculateBallanse();
-                      "
-                      class="btn btn-primary m-1 col-1"
-                    >
-                      +
-                    </button>
-                    <button
-                      type="button"
-                      @click="
-                        curArmor.DecreaseCount();
-                        recalculateBallanse();
-                      "
-                      class="btn btn-primary m-1 col-1"
-                    >
-                      -
-                    </button>
-                  </div>
+                    <dt class="col-6 fw-normal text-muted">{{ dataName }}</dt>
+                    <dd class="col-6 text-end mb-0">{{ data }}</dd>
+                  </template>
+                </dl>
+
+                <div
+                  class="btn-group"
+                  role="group"
+                  :aria-label="`Изменить количество: ${curArmor.name}`"
+                >
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary"
+                    aria-label="Уменьшить"
+                    @click="
+                      curArmor.DecreaseCount();
+                      recalculateBallanse();
+                    "
+                  >
+                    −
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary"
+                    aria-label="Увеличить"
+                    @click="
+                      curArmor.IncreaseCount();
+                      recalculateBallanse();
+                    "
+                  >
+                    +
+                  </button>
                 </div>
-                <hr />
               </li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="col m-1 p-1">
-        <div class="card mb-4 box-shadow">
+
+      <!-- Правая колонка -->
+      <div class="col-12 col-lg-6 d-flex flex-column gap-4">
+        <!-- Итоговый баланс -->
+        <div class="card shadow-sm">
           <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Итоговый баланс</h4>
+            <h2 class="h4 mb-0">Итоговый баланс</h2>
           </div>
           <div class="card-body">
-            <ul class="list-unstyled mt-3 mb-4">
-              <li
+            <dl class="row mb-3">
+              <template
                 v-for="(data, index) in displayedStatistics"
                 :key="index"
-                class="list-unstyled"
               >
-                {{ index }} : {{ data.toFixed(2) }}
-              </li>
-            </ul>
-            <!--  -->
-            <div class="progress">
+                <dt class="col-6 fw-normal text-muted">{{ index }}</dt>
+                <dd class="col-6 text-end mb-1">{{ data.toFixed(2) }}</dd>
+              </template>
+            </dl>
+
+            <div
+              class="progress"
+              role="progressbar"
+              aria-label="Распределение характеристик"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
               <div
                 class="progress-bar bg-danger"
-                role="progressbar"
-                :style="'width:' + displayedStatistics.healthBoost + '%'"
+                :style="{ width: displayedStatistics.healthBoost + '%' }"
                 :aria-valuenow="displayedStatistics.healthBoost"
-                aria-valuemin="0"
-                aria-valuemax="100"
+                :aria-valuetext="`Здоровье: ${displayedStatistics.healthBoost.toFixed(
+                  1
+                )}%`"
               ></div>
               <div
                 class="progress-bar bg-success"
-                role="progressbar"
-                :style="'width:' + displayedStatistics.damageBoost + '%'"
+                :style="{ width: displayedStatistics.damageBoost + '%' }"
                 :aria-valuenow="displayedStatistics.damageBoost"
-                aria-valuemin="0"
-                aria-valuemax="100"
+                :aria-valuetext="`Урон: ${displayedStatistics.damageBoost.toFixed(
+                  1
+                )}%`"
               ></div>
               <div
                 class="progress-bar bg-info"
-                role="progressbar"
-                :style="'width:' + displayedStatistics.speedBoost + '%'"
+                :style="{ width: displayedStatistics.speedBoost + '%' }"
                 :aria-valuenow="displayedStatistics.speedBoost"
-                aria-valuemin="0"
-                aria-valuemax="100"
+                :aria-valuetext="`Скорость: ${displayedStatistics.speedBoost.toFixed(
+                  1
+                )}%`"
               ></div>
             </div>
-            <!--  -->
+
+            <!-- Легенда прогресс-бара -->
+            <ul class="list-inline small text-muted mt-2 mb-0">
+              <li class="list-inline-item me-3">
+                <span class="badge bg-danger">&nbsp;</span> Здоровье
+              </li>
+              <li class="list-inline-item me-3">
+                <span class="badge bg-success">&nbsp;</span> Урон
+              </li>
+              <li class="list-inline-item">
+                <span class="badge bg-info">&nbsp;</span> Скорость
+              </li>
+            </ul>
           </div>
         </div>
-        <!--  -->
-        <div class="card mb-4 box-shadow">
+
+        <!-- Информация -->
+        <div class="card shadow-sm">
           <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Информация</h4>
+            <h2 class="h4 mb-0">Информация</h2>
           </div>
           <div class="card-body">
-            <ul class="list-unstyled mt-3 mb-4">
+            <ul class="list-unstyled mb-0">
               <li
                 v-for="(curArmor, index) in armor"
                 :key="index"
-                class="list-unstyled"
+                class="d-flex justify-content-between align-items-center py-2 border-bottom"
               >
-                <ul>
-                  <li class="list-unstyled">
-                    Наименование : {{ curArmor.name }}
-                  </li>
-                  <li class="list-unstyled">
-                    Количество : {{ curArmor.amountSelected }}
-                  </li>
-                </ul>
-                <hr />
+                <span>{{ curArmor.name }}</span>
+                <span class="badge bg-secondary">
+                  {{ curArmor.amountSelected }}
+                </span>
               </li>
             </ul>
           </div>
         </div>
       </div>
     </div>
-    <div class="row m-1 p-1">
-      <p>
-        <a
-          class="btn btn-warning"
-          data-bs-toggle="collapse"
-          href="#changeModules"
-          aria-expanded="false"
-          aria-controls="changeModules"
-        >
-          Изменить Модули
-        </a>
-      </p>
-      <div class="collapse" id="changeModules">
-        <div class="row">
+
+    <!-- Изменение модулей -->
+    <div class="m-3">
+      <button
+        class="btn btn-warning"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#changeModules"
+        aria-expanded="false"
+        aria-controls="changeModules"
+      >
+        Изменить Модули
+      </button>
+
+      <div class="collapse mt-3" id="changeModules">
+        <div class="row g-3">
           <div
-            class="col-md-4 col-12 p-0 m-0"
             v-for="(curArmor, index) in armor"
             :key="index"
+            class="col-12 col-md-6 col-lg-4"
           >
             <ObjectCreatorVue
               :constructable="curArmor"
-              @obj-changed="recalculateBallanse()"
               :name="`модуля ${curArmor.name}`"
+              @obj-changed="recalculateBallanse()"
             />
           </div>
         </div>
